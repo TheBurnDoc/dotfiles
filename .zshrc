@@ -1,3 +1,4 @@
+# Local paths
 export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Oh My Zsh! init
@@ -5,6 +6,9 @@ ZSH_THEME="amuse"
 plugins=(git dotenv kubectl kubectx)
 export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
+
+# Default editor
+export VISUAL=vim
 
 # macOS specific
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -43,16 +47,13 @@ else
     fi
 fi
 
-# Local path
-export PATH=$PATH:$HOME/.local/bin
-
 # Go configuration
 export GOPATH=~/.local/go
 export PATH=$PATH:$GOPATH/bin
 
 # Kubectx prompt
 kubectx_mapping[minikube]="%{$reset_color%}%{$fg[green]%}minikube%{$reset_color%}"
-PROMPT='%{$fg[yellow]%}$(kubectx_prompt_info)%{$reset_color%} '$PROMPT
+export RPROMPT='%{$fg[yellow]%}$(kubectx_prompt_info)%{$reset_color%}'
 
 # Aliases
 alias ws='cd ~/Workspace'
