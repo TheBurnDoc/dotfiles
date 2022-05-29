@@ -2,7 +2,7 @@
 export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Oh My Zsh! init
-ZSH_THEME="amuse"
+ZSH_THEME="theburndoc"
 plugins=(git dotenv kubectl kubectx)
 export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
@@ -50,10 +50,6 @@ fi
 # Go configuration
 export GOPATH=~/.local/go
 export PATH=$PATH:$GOPATH/bin
-
-# Kubectx prompt
-kubectx_mapping[minikube]="%{$reset_color%}%{$fg[green]%}minikube%{$reset_color%}"
-export RPROMPT='%{$fg[yellow]%}$(kubectx_prompt_info)%{$reset_color%}'
 
 # Aliases
 alias ws='cd ~/Workspace'
