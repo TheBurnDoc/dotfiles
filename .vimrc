@@ -110,6 +110,3 @@ let &titlestring = "vim (" . expand("%:t") . ")"
 if &term == "screen" || &term == "xterm"
     set title
 endif
-
-" Turn off Jedi docstring window
-autocmd FileType python setlocal completeopt-=preview
