@@ -10,9 +10,6 @@ set t_Co=256
 " Turn on syntax highlighting
 syntax on
 
-" Enable Predawn colour scheme
-colorscheme predawn
-
 " Make sure file type detection is on
 filetype plugin indent on
 
