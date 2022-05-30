@@ -2,7 +2,7 @@
 export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Oh My Zsh! init
-ZSH_THEME="theburndoc"
+ZSH_THEME="avit"
 plugins=(git dotenv kubectl kubectx)
 export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
