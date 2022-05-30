@@ -9,6 +9,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Default editor
 export VISUAL=vim
+export EDITOR=vim
 
 # macOS specific
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -24,6 +25,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
         export CPATH=$(brew --prefix)/include:$CPATH
         export LIBRARY_PATH=$(brew --prefix)/lib:$LIBRARY_PATH
         export HOMEBREW_NO_ENV_HINTS=1
+        export HOMEBREW_NO_AUTO_UPDATE=1
     fi
 
     export DYLD_LIBRARY_PATH=$LIBRARY_PATH:$DYLD_LIBRARY_PATH
