@@ -11,6 +11,10 @@ source $ZSH/oh-my-zsh.sh
 export VISUAL=vim
 export EDITOR=vim
 
+# Auto-completion
+autoload -Uz compinit && compinit
+autoload -Uz bashcompinit && bashcompinit
+
 # macOS specific
 if [[ "$OSTYPE" == "darwin"* ]]; then
 
@@ -19,8 +23,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
         source /Users/tim/.iterm2_shell_integration.zsh
     fi
 
-    # Homebrew configuration
-    if command -v brew > /dev/null; then
+    # Homebrew
+    if (( $+commands[brew] )); then
         export PATH=$(brew --prefix)/bin:$PATH
         export CPATH=$(brew --prefix)/include:$CPATH
         export LIBRARY_PATH=$(brew --prefix)/lib:$LIBRARY_PATH
@@ -49,9 +53,16 @@ else
     fi
 fi
 
-# Go configuration
-export GOPATH=~/.local/go
-export PATH=$PATH:$GOPATH/bin
+# Golang
+if (( $+commands[go] )); then
+    export GOPATH=~/.local/go
+    export PATH=$PATH:$GOPATH/bin
+fi
+
+# Terraform
+if (( $+commands[terraform] )); then
+    complete -o nospace -C $(which terraform) terraform
+fi
 
 # Aliases
 alias ws='cd ~/Workspace'
@@ -62,3 +73,6 @@ alias -s {go,md,yml,yaml,tf,Dockerfile}=code
 
 # Functions
 mkcd() { mkdir -p $1 && cd $1 }
+
+autoload -U +X bashcompinit && bashcompinit
+
