@@ -11,10 +11,6 @@ source $ZSH/oh-my-zsh.sh
 export VISUAL=vim
 export EDITOR=vim
 
-# Auto-completion
-autoload -Uz compinit && compinit
-autoload -Uz bashcompinit && bashcompinit
-
 # macOS specific
 if [[ "$OSTYPE" == "darwin"* ]]; then
 
