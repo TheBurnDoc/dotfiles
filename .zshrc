@@ -28,6 +28,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
         export HOMEBREW_NO_AUTO_UPDATE=1
     fi
 
+    if [ -d $HOME/Library/Python/3.9 ]; then
+        export PATH=$HOME/Library/Python/3.9/bin:$PATH
+    fi
+
     export DYLD_LIBRARY_PATH=$LIBRARY_PATH:$DYLD_LIBRARY_PATH
 
 # Non macOS systems
@@ -60,15 +64,24 @@ if (( $+commands[terraform] )); then
     complete -o nospace -C $(which terraform) terraform
 fi
 
-# Aliases
+# Kubernetes
+if (( $+commands[kubectl] )); then
+    if (( $+commands[kubectx] )); then
+        alias kx='kubectx'
+    fi
+    _CTX='echo "Kubernetes Context: $(kubectl config current-context)";'$_CTX
+fi
+
+# Azure
+if (( $+commands[az] )); then
+    _CTX='echo "Azure Subscription: $(az account show | jq -r .name)";'$_CTX
+fi
+
+# Context summary
+alias ctx='eval $_CTX'
+
+# Misc. aliases and functions
 alias ws='cd ~/Workspace'
-alias kx='kubectx'
-
-# Suffix aliases
 alias -s {go,md,yml,yaml,tf,Dockerfile}=code
-
-# Functions
 mkcd() { mkdir -p $1 && cd $1 }
-
-autoload -U +X bashcompinit && bashcompinit
 
