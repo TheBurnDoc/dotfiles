@@ -7,16 +7,21 @@ plugins=(git dotenv kubectl kubectx)
 export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
-# Default editor
-export VISUAL=vim
+# Default editors
+export VISUAL='code -w'
 export EDITOR=vim
 
 # macOS specific
 if [[ "$OSTYPE" == "darwin"* ]]; then
 
-    # iTerm2 shell integration
+    # iTerm2
     if [ -f $HOME/.iterm2_shell_integration.zsh ]; then
-        source /Users/tim/.iterm2_shell_integration.zsh
+        source $HOME/.iterm2_shell_integration.zsh
+    fi
+
+    # Python
+    if [ -d $HOME/Library/Python/3.9 ]; then
+        export PATH=$HOME/Library/Python/3.9/bin:$PATH
     fi
 
     # Homebrew
@@ -28,16 +33,11 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
         export HOMEBREW_NO_AUTO_UPDATE=1
     fi
 
-    if [ -d $HOME/Library/Python/3.9 ]; then
-        export PATH=$HOME/Library/Python/3.9/bin:$PATH
-    fi
-
     export DYLD_LIBRARY_PATH=$LIBRARY_PATH:$DYLD_LIBRARY_PATH
 
 # Non macOS systems
 else
 
-    # Shared settings on all non-macOS
     export PATH=/usr/local/bin:$PATH
     export CPATH=/usr/local/include:$CPATH
     export LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
@@ -53,14 +53,8 @@ else
     fi
 fi
 
-# Workspace
-if [ -d ~/Workspace ]; then
-    export WORKSPACE=$HOME/Workspace
-elif [ -f ~/workspace ]; then
-    export WORKSPACE=$HOME/workspace
-fi
-
-# CD path
+# Workspace and CDPATH
+WORKSPACE=$(find $HOME -iname workspace -type d -maxdepth 1)
 export CDPATH=$WORKSPACE:$WORKSPACE/github.com
 
 # Golang
@@ -76,9 +70,8 @@ fi
 
 # Kubernetes
 if (( $+commands[kubectl] )); then
-    if (( $+commands[kubectx] )); then
-        alias kx='kubectx'
-    fi
+    (( $+commands[kubectx] )) && alias kx='kubectx'
+    (( $+commands[stern] )) && source <(stern --completion=zsh)
     _CTX='echo "Kubernetes Context: $(kubectl config current-context)";'$_CTX
 fi
 
@@ -89,7 +82,7 @@ fi
 
 # Aliases and functions
 alias ctx='eval $_CTX'
+alias reload='source $HOME/.zshrc'
 alias -s {go,py,c,cc,cpp,md,yml,yaml,tf,hcl,Dockerfile}=code
 mkcd() { mkdir -p $1 && cd $1 }
 alias ..='cd ..'
-
