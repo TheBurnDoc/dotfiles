@@ -53,6 +53,16 @@ else
     fi
 fi
 
+# Workspace
+if [ -d ~/Workspace ]; then
+    export WORKSPACE=$HOME/Workspace
+elif [ -f ~/workspace ]; then
+    export WORKSPACE=$HOME/workspace
+fi
+
+# CD path
+export CDPATH=$WORKSPACE:$WORKSPACE/github.com
+
 # Golang
 if (( $+commands[go] )); then
     export GOPATH=~/.local/go
@@ -77,11 +87,9 @@ if (( $+commands[az] )); then
     _CTX='echo "Azure Subscription: $(az account show | jq -r .name)";'$_CTX
 fi
 
-# Context summary
+# Aliases and functions
 alias ctx='eval $_CTX'
-
-# Misc. aliases and functions
-alias ws='cd ~/Workspace'
-alias -s {go,md,yml,yaml,tf,Dockerfile}=code
+alias -s {go,py,c,cc,cpp,md,yml,yaml,tf,hcl,Dockerfile}=code
 mkcd() { mkdir -p $1 && cd $1 }
+alias ..='cd ..'
 
