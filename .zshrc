@@ -9,7 +9,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Default editors
 export VISUAL='code -w'
-export EDITOR=vim
+export EDITOR='vim'
 
 # macOS specific
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -70,9 +70,26 @@ fi
 
 # Kubernetes
 if (( $+commands[kubectl] )); then
-    (( $+commands[kubectx] )) && alias kx='kubectx'
-    (( $+commands[stern] )) && source <(stern --completion=zsh)
     _CTX='echo "Kubernetes Context: $(kubectl config current-context)";'$_CTX
+
+    # Tool completions
+    (( $+commands[stern] )) && source <(stern --completion=zsh)
+    (( $+commands[argocd] )) && source <(argocd completion zsh)
+
+    # Depends on kubectx plugin
+    if (( $+commands[kubectx] )); then
+        alias kx='kubectx'
+        RPROMPT=$RPROMPT'%{$(echotc UP 1)%} $(kubectx_prompt_info)%{$(echotc DO 1)%}'
+        for ctx in $(kx | grep -i prod); do
+            kubectx_mapping[$ctx]="%{$bg[red]%}%{$fg[yellow]%} $ctx PROD! %{$reset_color%}"
+        done
+    fi
+fi
+
+# AWS
+if (( $+commands[aws] )); then
+    _CTX='echo AWS Account: $(aws iam list-account-aliases --output json | jq -r ".AccountAliases[0]");'$_CTX
+    (( $+commands[aws_completer] )) && complete -C aws_completer aws
 fi
 
 # Azure
