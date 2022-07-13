@@ -8,8 +8,12 @@ export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
 # Default editors
-export VISUAL='code -w'
-export EDITOR='vim'
+if [[ -z $SSH_CONNECTION ]] && (( +$commands[code] )); then
+    export VISUAL='code -w'
+else
+    export VISUAL='vi'
+fi
+export EDITOR=$VISUAL
 
 # macOS specific
 if [[ "$OSTYPE" == "darwin"* ]]; then
