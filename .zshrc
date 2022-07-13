@@ -58,7 +58,7 @@ else
 fi
 
 # Workspace and CDPATH
-WORKSPACE=$(find $HOME -iname workspace -type d -maxdepth 1)
+WORKSPACE=$(find $HOME -maxdepth 1 -iname workspace -type d)
 export CDPATH=$WORKSPACE:$WORKSPACE/github.com
 
 # Golang
