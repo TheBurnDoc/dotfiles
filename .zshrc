@@ -8,7 +8,7 @@ export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
 # Default editors
-if [[ -z $SSH_CONNECTION ]] && (( +$commands[code] )); then
+if [[ -z $SSH_CONNECTION && (( +$commands[code] )) ]]; then
     export VISUAL='code -w'
 else
     export VISUAL='vi'
