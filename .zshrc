@@ -42,7 +42,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 # Non macOS systems
 else
 
-    export PATH=/usr/local/bin:$PATH
+    export PATH=/usr/local/bin:/usr/sbin:$PATH
     export CPATH=/usr/local/include:$CPATH
     export LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
     export LD_LIBRARY_PATH=$LIBRARY_PATH:$LD_LIBRARY_PATH
