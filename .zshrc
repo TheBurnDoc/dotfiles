@@ -67,6 +67,11 @@ if (( $+commands[go] )); then
     export PATH=$PATH:$GOPATH/bin
 fi
 
+# Rust
+if [ -f "$HOME/.cargo/env" ]; then
+    source "$HOME/.cargo/env"
+fi
+
 # Terraform
 if (( $+commands[terraform] )); then
     complete -o nospace -C $(which terraform) terraform
