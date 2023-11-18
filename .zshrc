@@ -2,8 +2,8 @@
 export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Oh My Zsh! init
-ZSH_THEME="avit"
-plugins=(git dotenv kubectl kubectx)
+ZSH_THEME="half-life"
+plugins=(git dotenv)
 export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
@@ -59,7 +59,7 @@ fi
 
 # Workspace and CDPATH
 WORKSPACE=$(find $HOME -maxdepth 1 -iname workspace -type d)
-export CDPATH=$WORKSPACE:$WORKSPACE/github.com
+export CDPATH=$WORKSPACE:$WORKSPACE/github.com:$WORKSPACE/gitlab.com
 
 # Golang
 if (( $+commands[go] )); then
@@ -67,7 +67,7 @@ if (( $+commands[go] )); then
     export PATH=$PATH:$GOPATH/bin
 fi
 
-# Rust
+# Cargo (Rust)
 if [ -f "$HOME/.cargo/env" ]; then
     source "$HOME/.cargo/env"
 fi
@@ -75,6 +75,11 @@ fi
 # Terraform
 if (( $+commands[terraform] )); then
     complete -o nospace -C $(which terraform) terraform
+fi
+
+# Rancher Desktop
+if [[ -d "$HOME/.rd" ]]; then
+    export PATH=$PATH:$HOME/.rd/bin
 fi
 
 # Kubernetes
@@ -106,9 +111,14 @@ if (( $+commands[az] )); then
     _CTX='echo "Azure Subscription: $(az account show | jq -r .name)";'$_CTX
 fi
 
+# GCP
+if (( $+commands[gcloud] )); then
+    _CTX='echo "GCP Project: $(gcloud config get-value project)";'$_CTX
+fi
+
 # Aliases and functions
 alias ctx='eval $_CTX'
 alias reload='source $HOME/.zshrc'
-alias -s {go,py,c,cc,cpp,md,yml,yaml,tf,hcl,Dockerfile}=code
+alias -s {rs,go,py,c,cc,cpp,md,yml,yaml,tf,hcl,Dockerfile}=code
 mkcd() { mkdir -p $1 && cd $1 }
 alias ..='cd ..'
