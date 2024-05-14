@@ -7,12 +7,7 @@ plugins=(git dotenv)
 export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
-# Default editors
-if [[ -z $SSH_CONNECTION && (( +$commands[code] )) ]]; then
-    export VISUAL='code -w'
-else
-    export VISUAL='vi'
-fi
+export VISUAL='vim'
 export EDITOR=$VISUAL
 
 # macOS specific
@@ -61,10 +56,20 @@ fi
 WORKSPACE=$(find $HOME -maxdepth 1 -iname workspace -type d)
 export CDPATH=$WORKSPACE:$WORKSPACE/github.com:$WORKSPACE/gitlab.com
 
+# Java
+if (( $+commands[jenv] )); then
+    export PATH=$HOME/.jenv/bin:$PATH
+    eval "$(jenv init -)"
+fi
+
+if [ -d "$(brew --prefix)/opt/openjdk" ]; then
+    export PATH=$(brew --prefix)/opt/openjdk/bin:$PATH
+fi
+
 # Golang
 if (( $+commands[go] )); then
     export GOPATH=~/.local/go
-    export PATH=$PATH:$GOPATH/bin
+    export PATH=$GOPATH/bin:$PATH
 fi
 
 # Cargo (Rust)
@@ -79,7 +84,7 @@ fi
 
 # Rancher Desktop
 if [[ -d "$HOME/.rd" ]]; then
-    export PATH=$PATH:$HOME/.rd/bin
+    export PATH=$HOME/.rd/bin:$PATH
 fi
 
 # Kubernetes
@@ -104,6 +109,7 @@ fi
 if (( $+commands[aws] )); then
     _CTX='echo AWS Account: $(aws iam list-account-aliases --output json | jq -r ".AccountAliases[0]");'$_CTX
     (( $+commands[aws_completer] )) && complete -C aws_completer aws
+    (( $+commands[fzf] )) && alias awsp='export AWS_PROFILE=$(sed -n "s/\[profile \(.*\)\]/\1/gp" ~/.aws/config | fzf)'
 fi
 
 # Azure
@@ -122,3 +128,4 @@ alias reload='source $HOME/.zshrc'
 alias -s {rs,go,py,c,cc,cpp,md,yml,yaml,tf,hcl,Dockerfile}=code
 mkcd() { mkdir -p $1 && cd $1 }
 alias ..='cd ..'
+
