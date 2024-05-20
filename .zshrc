@@ -54,7 +54,8 @@ fi
 
 # Workspace and CDPATH
 WORKSPACE=$(find $HOME -maxdepth 1 -iname workspace -type d)
-export CDPATH=$WORKSPACE:$WORKSPACE/github.com:$WORKSPACE/gitlab.com
+export PATH=$PATH:$WORKSPACE/_local/scripts
+export CDPATH=$WORKSPACE:$WORKSPACE/github.com:$WORKSPACE/gitlab.com:$WORKSPACE/github.com/upwindsecurity
 
 # Java
 if (( $+commands[jenv] )); then
