@@ -59,12 +59,8 @@ export CDPATH=$WORKSPACE:$WORKSPACE/github.com:$WORKSPACE/gitlab.com:$WORKSPACE/
 
 # Java
 if (( $+commands[jenv] )); then
-    export PATH=$HOME/.jenv/bin:$PATH
+    export PATH=$HOME/.jenv/bin:$(jenv prefix)/bin:$PATH
     eval "$(jenv init -)"
-fi
-
-if [ -d "$(brew --prefix)/opt/openjdk" ]; then
-    export PATH=$(brew --prefix)/opt/openjdk/bin:$PATH
 fi
 
 # Golang
