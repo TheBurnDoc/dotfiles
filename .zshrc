@@ -49,6 +49,10 @@ else
         export WINEARCH=win32
         export WINEPREFIX=~/.wine/win32
 
+	# Homebrew for Linux
+	if [ -d /home/linuxbrew ]; then
+	     export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
+	fi
     fi
 fi
 
@@ -64,9 +68,9 @@ if (( $+commands[jenv] )); then
 fi
 
 # Golang
-if (( $+commands[go] )); then
-    export GOPATH=~/.local/go
-    export PATH=$GOPATH/bin:$PATH
+if [ -d /usr/local/go ]; then
+    export GOPATH=$HOME/.local/go
+    export PATH=$GOPATH/bin:/usr/local/go/bin:$PATH
 fi
 
 # Cargo (Rust)
