@@ -50,7 +50,7 @@ if (( $+commands[terraform] )); then
 fi
 
 # Rancher Desktop
-if [[ -d "$HOME/.rd" ]]; then
+if [ -d "$HOME/.rd" ]; then
     export PATH=$HOME/.rd/bin:$PATH
 fi
 
@@ -121,3 +121,9 @@ alias ctx='eval $_CTX'
 mkcd() { mkdir -p $1 && cd $1 }
 alias ..='cd ..'
 
+# Source local files
+if [ -d $HOME/.local/zshrc.d ]; then
+    for file in $HOME/.local/zshrc.d/*; do
+	source "$file"
+    done
+fi
