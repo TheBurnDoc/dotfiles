@@ -2,6 +2,42 @@
 export WORKSPACE=$(find $HOME -maxdepth 1 -iname workspace -type d)
 export CDPATH=$WORKSPACE:$WORKSPACE/github.com:$WORKSPACE/gitlab.com
 export PATH=$HOME/.local/bin:$WORKSPACE/_local/scripts:/usr/local/bin:$PATH
+export CPATH=$HOME/.local/include:$CPATH
+export LIBRARY_PATH=$HOME/.local/lib:$LIBRARY_PATH
+
+# macOS specific
+if [[ "$OSTYPE" == "darwin"* ]]; then
+
+    # iTerm2
+    if [ -f $HOME/.iterm2_shell_integration.zsh ]; then
+        source $HOME/.iterm2_shell_integration.zsh
+    fi
+
+    # Homebrew
+    if [ -d /opt/homebrew ]; then
+        export PATH=/opt/homebrew/bin:$PATH
+    fi
+
+# Linux specific
+elif [[ "$OSTYPE" == "linux-gnu" ]]; then
+
+    # Wine configuration
+    export WINEARCH=win32
+    export WINEPREFIX=~/.wine/win32
+
+     # Homebrew
+    if [ -d /home/linuxbrew/.linuxbrew ]; then
+        export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
+    fi   
+fi
+
+# Homebrew
+if (( $+commands[brew] )); then
+    export PATH=$(brew --prefix)/bin:$PATH
+    export CPATH=$(brew --prefix)/include:$CPATH
+    export LIBRARY_PATH=$(brew --prefix)/lib:$LIBRARY_PATH
+    export LD_LIBRARY_PATH=$(brew --prefix)/lib:$LD_LIBRARY_PATH
+fi
 
 # Vim
 if (( $+commands[vim] )); then
@@ -16,16 +52,6 @@ if [ -d $HOME/.oh-my-zsh ]; then
     export ZSH="$HOME/.oh-my-zsh"
     source $ZSH/oh-my-zsh.sh
 fi
-
-# Homebrew
-if (( $+commands[brew] )); then
-    export PATH=$(brew --prefix)/bin:$PATH
-    export CPATH=$(brew --prefix)/include:$CPATH
-    export LIBRARY_PATH=$(brew --prefix)/lib:$LIBRARY_PATH
-    export HOMEBREW_NO_ENV_HINTS=1
-    export HOMEBREW_NO_AUTO_UPDATE=1
-fi
-
 
 # Java (Jenv)
 if (( $+commands[jenv] )); then
@@ -89,32 +115,6 @@ if (( $+commands[gcloud] )); then
     _CTX='echo "GCP Project: $(gcloud config get-value project)";'$_CTX
 fi
 
-# macOS specific
-if [[ "$OSTYPE" == "darwin"* ]]; then
-
-    # iTerm2
-    if [ -f $HOME/.iterm2_shell_integration.zsh ]; then
-        source $HOME/.iterm2_shell_integration.zsh
-    fi
-
-    export DYLD_LIBRARY_PATH=$LIBRARY_PATH:$DYLD_LIBRARY_PATH
-
-else
-
-    export PATH=/usr/local/bin:/usr/sbin:$PATH
-    export CPATH=/usr/local/include:$CPATH
-    export LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
-    export LD_LIBRARY_PATH=$LIBRARY_PATH:$LD_LIBRARY_PATH
-
-    # Linux specific
-    if [[ "$OSTYPE" == "linux-gnu" ]]; then
-
-        # Wine configuration
-        export WINEARCH=win32
-        export WINEPREFIX=~/.wine/win32
-
-    fi
-fi
 
 # Aliases and functions
 alias ctx='eval $_CTX'
